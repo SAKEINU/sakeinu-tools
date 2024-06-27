@@ -1,0 +1,14 @@
+# Logs
+logs
+*.log
+
+# OS
+.DS_Store
+
+# IDE - VSCode
+.vscode/*
+
+## pnpm node_modules
+node_modules
+
+dist/
