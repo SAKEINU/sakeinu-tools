@@ -4,9 +4,7 @@ import {
   Contract,
   BigNumberish,
 } from 'ethers'
-import abi from './abi.json'
 
-export const SakeInuAbi = abi
 export class SakeInu {
   private contract: Contract
 
