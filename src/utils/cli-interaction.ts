@@ -34,5 +34,4 @@ export async function run<T>(functionMap?: Record<string, T>) {
   process.exit(0)
 }
 
-
 export default run
