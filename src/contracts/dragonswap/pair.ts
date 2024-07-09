@@ -8,6 +8,9 @@ export class DragonSwapPair {
   }
 
   // Read
+  async balanceOf(owner: ethers.AddressLike): Promise<ethers.BigNumberish> {
+    return await this.contract.balanceOf(owner)
+  }
 
   // Write
 }

@@ -1,4 +1,5 @@
 import readline from 'readline'
+import { Command } from '../commands/interface'
 
 const command = 'Enter input: '
 
@@ -18,7 +19,7 @@ function getInput(prompt: string): Promise<string> {
   })
 }
 
-export async function run<T>(functionMap?: Record<string, T>) {
+export async function run<T extends Command>(commands?: T) {
   const exitCommands = ['exit', 'quit']
   let shouldExit = false
   while (!shouldExit) {
@@ -26,9 +27,7 @@ export async function run<T>(functionMap?: Record<string, T>) {
     if (exitCommands.includes(userInput.toLowerCase())) {
       shouldExit = true
     } else {
-      // Call your function here using the userInput
-      // For example:
-      // myFunction(userInput);
+      await commands.run(userInput.split(' '))
     }
   }
   process.exit(0)

@@ -23,10 +23,10 @@ export interface Config {
   dsConfig: DragonSwapConfig
 }
 
-let config: Config
-export function validateEnv() {
+export let config: Config
+export function initEnv() {
   config = {
-    sakeInu: process.env.SAKE_INU || defaultConfig.sakeInu,
+    sakeInu: process.env.ADDRESS_SAKEINU || defaultConfig.sakeInu,
     ethConfig: {
       rpcUrl: process.env.RPC_URL || defaultConfig.ethConfig.rpcUrl,
       privateKey: process.env.PRIVATE_KEY || defaultConfig.ethConfig.privateKey,
@@ -35,8 +35,8 @@ export function validateEnv() {
       ),
     },
     dsConfig: {
-      pair: process.env.PAIR || defaultConfig.dsConfig.pair,
-      router: process.env.ROUTER || defaultConfig.dsConfig.router,
+      pair: process.env.ADDRESS_PAIR || defaultConfig.dsConfig.pair,
+      router: process.env.ADDRESS_ROUTER || defaultConfig.dsConfig.router,
       slippage: parseFloat(
         process.env.SLIPPAGE || defaultConfig.dsConfig.slippage.toString(),
       ),
@@ -64,5 +64,3 @@ export function validateEnv() {
     throw new Error('PAIR is required')
   }
 }
-
-export default config
