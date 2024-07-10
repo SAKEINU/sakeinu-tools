@@ -11,10 +11,12 @@ import { wallet, initWallet } from './common/wallet'
 import { ethers } from 'ethers'
 import { DragonSwapPair } from './contracts/dragonswap'
 import { DragonSwapCommandHandler } from './commands/dragonswap/handler'
-import { CommandHandler } from './commands'
-import run from './utils/cli-interaction'
+
+import runCli from './utils/cli-interaction'
 import { Command } from './commands/interface'
 import { BalanceOfCommand } from './commands/dragonswap/balanceOf'
+import { CommandHandler } from './commands'
+import { SakeInuCommandHandler } from './commands/sakeinu/handler'
 
 function init() {
   initWallet()
@@ -26,14 +28,26 @@ async function bootstrap() {
   const dsPair = new DragonSwapPair(dsContract)
 
   // TODO: add more commands
-  const commands: Command[] = [
+  const dsCommands: Command[] = [
     new BalanceOfCommand(dsPair)
   ]
+  const dsHandler = new DragonSwapCommandHandler(dsCommands)
 
-  const dsHandler = new DragonSwapCommandHandler(commands)
-  const commandHandler = new CommandHandler(dsHandler, undefined)
 
-  await run(commandHandler)
+  const siCommands: Command[] = []
+  const siHandler = new SakeInuCommandHandler(siCommands)
+  const commandHandler = new CommandHandler(
+    '',
+    'cli tools for SAKEINU(si) and DragonSwap(ds)',
+    '<command> <subcommand> <args...> ',
+    [
+      dsHandler,
+      // siHandler
+    ]
+  )
+
+  console.log(commandHandler.description)
+  await runCli(commandHandler)
 }
 
 bootstrap()

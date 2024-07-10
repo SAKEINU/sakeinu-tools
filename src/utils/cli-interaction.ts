@@ -1,7 +1,7 @@
 import readline from 'readline'
 import { Command } from '../commands/interface'
 
-const command = 'Enter input: '
+const command = '>>> commands: '
 
 // get input from the user and run the function by it.
 // write a code

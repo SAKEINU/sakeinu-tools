@@ -4,7 +4,7 @@ import { Command } from '../interface'
 export class BalanceOfCommand implements Command {
   readonly command: string = 'balanceOf'
   readonly description = 'Get the balance of an address'
-  readonly help = 'balanceOf address(as the first argument)'
+  readonly help = 'address'
 
   constructor(private readonly ds: DragonSwapPair) {}
 
