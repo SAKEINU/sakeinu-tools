@@ -8,10 +8,13 @@ export class CommandHandler implements Command {
     readonly command: string,
     readonly description: string,
     readonly help: string,
-    commands: Command[]
+    commands: Command[],
   ) {
     commands?.forEach((cmd) => {
-      this.helps = `${this.helps} ` + (this.command ? `<${this.command}> ` : '') + `<${cmd.command}> <${cmd.help}> \n`
+      this.helps =
+        `${this.helps} ` +
+        (this.command ? `<${this.command}> ` : '') +
+        `<${cmd.command}> <${cmd.help}> \n`
       this.setCommand(cmd)
     })
   }

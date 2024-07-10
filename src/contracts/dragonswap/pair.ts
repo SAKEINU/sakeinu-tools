@@ -1,11 +1,7 @@
 import { ethers, Contract } from 'ethers'
 
 export class DragonSwapPair {
-  private contract: Contract
-
-  constructor(contract: ethers.Contract) {
-    this.contract = contract
-  }
+  constructor(private readonly contract: ethers.Contract) {}
 
   // Read
   async balanceOf(owner: ethers.AddressLike): Promise<ethers.BigNumberish> {

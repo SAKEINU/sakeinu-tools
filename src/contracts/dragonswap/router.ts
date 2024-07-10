@@ -1,13 +1,25 @@
-import { ethers, Contract } from 'ethers'
+import { ethers, Contract, ContractTransactionResponse } from 'ethers'
 
 export class DragonSwapRouter {
-  private contract: Contract
 
-  constructor(contract: ethers.Contract) {
-    this.contract = contract
+  constructor(private readonly contract: ethers.Contract) {
   }
 
-  // Read
-
-  // Write
+  async addLiquiditySEI(
+    token: string,
+    amountTokenDesired: string,
+    amountTokenMin: string,
+    amountSEIMin: string,
+    to: string,
+    deadline: number,
+  ): Promise<ContractTransactionResponse> {
+    return await this.contract.addLiquiditySEI(
+      token,
+      amountTokenDesired,
+      amountTokenMin,
+      amountSEIMin,
+      to,
+      deadline,
+    )
+  }
 }

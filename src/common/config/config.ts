@@ -42,7 +42,7 @@ export function initEnv() {
       ),
       deadlineSeconds: parseInt(
         process.env.DS_DEADLINE ||
-        defaultConfig.dsConfig.deadlineSeconds.toString(),
+          defaultConfig.dsConfig.deadlineSeconds.toString(),
       ),
     },
 
