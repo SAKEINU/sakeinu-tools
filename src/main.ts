@@ -4,7 +4,7 @@ loadConfig()
 
 import { config, initEnv } from './common/config/config'
 initEnv()
-
+import siAbi from './contracts/sakeinu/abi.json'
 import pairAbi from './contracts/dragonswap/pair.json'
 import { wallet, initWallet } from './common/wallet'
 
@@ -17,13 +17,14 @@ import { Command } from './commands/interface'
 import { BalanceOfCommand } from './commands/dragonswap/balanceOf'
 import { CommandHandler } from './commands'
 import { SakeInuCommandHandler } from './commands/sakeinu/handler'
+import { SakeInuMaxApprove } from './commands/sakeinu/maxApprove'
+import { SakeInu } from './contracts/sakeinu'
 
 function init() {
   initWallet()
 }
 
-async function bootstrap() {
-  init()
+function dragonSwapInit(): Command {
   const dsContract = new ethers.Contract(config.dsConfig.pair, pairAbi, wallet)
   const dsPair = new DragonSwapPair(dsContract)
 
@@ -31,18 +32,31 @@ async function bootstrap() {
   const dsCommands: Command[] = [
     new BalanceOfCommand(dsPair)
   ]
-  const dsHandler = new DragonSwapCommandHandler(dsCommands)
+  return new DragonSwapCommandHandler(dsCommands)
+}
 
 
-  const siCommands: Command[] = []
-  const siHandler = new SakeInuCommandHandler(siCommands)
+function sakeInuInit(): Command {
+  const siContract = new ethers.Contract(config.sakeInu, siAbi, wallet)
+  const si = new SakeInu(siContract)
+
+  const siCommands: Command[] = [
+    new SakeInuMaxApprove(si)
+  ]
+  return new SakeInuCommandHandler(siCommands)
+
+}
+
+
+async function bootstrap() {
+  init()
   const commandHandler = new CommandHandler(
     '',
     'cli tools for SAKEINU(si) and DragonSwap(ds)',
     '<command> <subcommand> <args...> ',
     [
-      dsHandler,
-      // siHandler
+      dragonSwapInit(),
+      sakeInuInit(),
     ]
   )
 

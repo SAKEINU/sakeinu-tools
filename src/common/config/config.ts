@@ -26,34 +26,31 @@ export interface Config {
 export let config: Config
 export function initEnv() {
   config = {
-    sakeInu: process.env.ADDRESS_SAKEINU || defaultConfig.sakeInu,
     ethConfig: {
-      rpcUrl: process.env.RPC_URL || defaultConfig.ethConfig.rpcUrl,
+      rpcUrl: process.env.RPC_NODE || defaultConfig.ethConfig.rpcUrl,
       privateKey: process.env.PRIVATE_KEY || defaultConfig.ethConfig.privateKey,
       chainId: parseInt(
         process.env.CHAIN_ID || defaultConfig.ethConfig.chainId.toString(),
       ),
     },
+
     dsConfig: {
-      pair: process.env.ADDRESS_PAIR || defaultConfig.dsConfig.pair,
-      router: process.env.ADDRESS_ROUTER || defaultConfig.dsConfig.router,
+      pair: process.env.DS_PAIR || defaultConfig.dsConfig.pair,
+      router: process.env.DS_ROUTER || defaultConfig.dsConfig.router,
       slippage: parseFloat(
         process.env.SLIPPAGE || defaultConfig.dsConfig.slippage.toString(),
       ),
       deadlineSeconds: parseInt(
-        process.env.DEADLINE_SECONDS ||
-          defaultConfig.dsConfig.deadlineSeconds.toString(),
+        process.env.DS_DEADLINE ||
+        defaultConfig.dsConfig.deadlineSeconds.toString(),
       ),
     },
-  }
 
-  // check required fields
-  if (!config.sakeInu) {
-    throw new Error('SAKE_INU is required')
+    sakeInu: process.env.SI_SAKEINU || defaultConfig.sakeInu,
   }
 
   if (!config.ethConfig.rpcUrl) {
-    throw new Error('RPC_URL is required')
+    throw new Error('RPC_NODE is required')
   }
 
   if (!config.ethConfig.privateKey) {
@@ -62,5 +59,10 @@ export function initEnv() {
 
   if (!config.dsConfig.pair) {
     throw new Error('PAIR is required')
+  }
+
+  // check required fields
+  if (!config.sakeInu) {
+    throw new Error('SI_SAKEINU is required')
   }
 }

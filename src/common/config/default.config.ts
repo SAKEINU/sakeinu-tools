@@ -12,8 +12,8 @@ export const dsConfig: DragonSwapConfig = {
 
 export const ethConfig: EthConfig = {
   rpcUrl: 'https://evm-rpc-arctic-1.sei-apis.com/',
-  privateKey: '',
   chainId: ARCTIC_CHAIN_ID,
+  privateKey: '',
 }
 
 export const defaultConfig: Config = {
