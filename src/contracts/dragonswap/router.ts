@@ -1,15 +1,13 @@
-import { ethers, Contract, ContractTransactionResponse } from 'ethers'
+import { ethers, ContractTransactionResponse } from 'ethers'
 
 export class DragonSwapRouter {
-
-  constructor(private readonly contract: ethers.Contract) {
-  }
+  constructor(private readonly contract: ethers.Contract) {}
 
   async addLiquiditySEI(
     token: string,
-    amountTokenDesired: string,
-    amountTokenMin: string,
-    amountSEIMin: string,
+    amountTokenDesired: string | bigint,
+    amountTokenMin: string | bigint,
+    amountSEIMin: string | bigint,
     to: string,
     deadline: number,
   ): Promise<ContractTransactionResponse> {
@@ -20,6 +18,25 @@ export class DragonSwapRouter {
       amountSEIMin,
       to,
       deadline,
+      { value: amountSEIMin },
+    )
+  }
+
+  async swapExactSEIForTokens(
+    // <amountOut> <path with comma separate> <to>
+    // write the types for the arguments
+    amountIn: string | bigint,
+    amountOut: string | bigint,
+    path: string[],
+    to: string,
+    deadline: number,
+  ): Promise<ContractTransactionResponse> {
+    return await this.contract.swapExactSEIForTokens(
+      amountOut,
+      path,
+      to,
+      deadline,
+      { value: amountIn },
     )
   }
 }

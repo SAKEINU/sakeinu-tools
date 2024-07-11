@@ -2,6 +2,7 @@ import { defaultConfig } from './default.config'
 
 export interface DragonSwapConfig {
   pair: string
+  wsei: string
   router?: string
   slippage: number
   deadlineSeconds: number
@@ -37,6 +38,7 @@ export function initEnv() {
     dsConfig: {
       pair: process.env.DS_PAIR || defaultConfig.dsConfig.pair,
       router: process.env.DS_ROUTER || defaultConfig.dsConfig.router,
+      wsei: process.env.DS_WSEI || defaultConfig.dsConfig.wsei,
       slippage: parseFloat(
         process.env.SLIPPAGE || defaultConfig.dsConfig.slippage.toString(),
       ),

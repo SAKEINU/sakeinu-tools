@@ -1,4 +1,3 @@
-import { dsConfig } from '../../common/config/default.config'
 import { SakeInu } from '../../contracts/sakeinu'
 import { Command } from '../interface'
 
@@ -20,7 +19,8 @@ export class SakeInuSetERC721Exemption implements Command {
     }
 
     const tx = await this.si.setERC721TransferExempt(
-      args[0], args[1] === 'true',
+      args[0],
+      args[1] === 'true',
     )
     console.log(tx.hash, tx.from, tx.to, tx.value.toString())
     return true

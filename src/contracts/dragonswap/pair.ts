@@ -1,4 +1,4 @@
-import { ethers, Contract } from 'ethers'
+import { ethers } from 'ethers'
 
 export class DragonSwapPair {
   constructor(private readonly contract: ethers.Contract) {}

@@ -27,7 +27,11 @@ export async function run<T extends Command>(commands?: T) {
     if (exitCommands.includes(userInput.toLowerCase())) {
       shouldExit = true
     } else {
-      await commands.run(userInput.split(' '))
+      try {
+        await commands.run(userInput.split(' '))
+      } catch (err) {
+        console.error(err)
+      }
     }
   }
   process.exit(0)

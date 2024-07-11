@@ -6,7 +6,6 @@ import { config, initEnv } from './common/config/config'
 initEnv()
 
 import siAbi from './contracts/sakeinu/abi.json'
-import pairAbi from './contracts/dragonswap/pair.json'
 import routerAbi from './contracts/dragonswap/router.json'
 
 import { wallet, initWallet } from './common/wallet'
@@ -14,30 +13,23 @@ import { ethers } from 'ethers'
 import { DragonSwapCommandHandler } from './commands/dragonswap/handler'
 
 import { Command } from './commands/interface'
-import { BalanceOfCommand } from './commands/dragonswap/balanceOf'
+import { DragonSwapBalances } from './commands/dragonswap/balances'
 import { CommandHandler } from './commands'
 import { SakeInuCommandHandler } from './commands/sakeinu/handler'
 import { SakeInuMaxApprove } from './commands/sakeinu/maxApprove'
 import { SakeInu } from './contracts/sakeinu'
-import { DragonSwapPair } from './contracts/dragonswap/pair'
-import { DragonSwapAddLiquidity } from './commands/dragonswap/addLiquidity'
+import { DragonSwapAddLiquidity } from './commands/dragonswap/addLiquiditySEI'
 import { DragonSwapRouter } from './contracts/dragonswap/router'
 
 import runCli from './utils/cli-interaction'
 import { SakeInuSetERC721Exemption } from './commands/sakeinu/setERC721Exemption'
+import { DragonSwapBuySAKEINU } from './commands/dragonswap/buy'
 
 function init() {
   initWallet()
 }
 
 function dragonSwapInit(): Command {
-  const dsPairContract = new ethers.Contract(
-    config.dsConfig.pair,
-    pairAbi,
-    wallet,
-  )
-  const dsPair = new DragonSwapPair(dsPairContract)
-
   const dsRouterContract = new ethers.Contract(
     config.dsConfig.router,
     routerAbi,
@@ -47,7 +39,8 @@ function dragonSwapInit(): Command {
   // TODO: add more commands
   const dsCommands: Command[] = [
     new DragonSwapAddLiquidity(dsRouter),
-    new BalanceOfCommand(dsPair),
+    new DragonSwapBalances(),
+    new DragonSwapBuySAKEINU(dsRouter),
   ]
   return new DragonSwapCommandHandler(dsCommands)
 }
@@ -58,7 +51,7 @@ function sakeInuInit(): Command {
 
   const siCommands: Command[] = [
     new SakeInuMaxApprove(si),
-    new SakeInuSetERC721Exemption(si)
+    new SakeInuSetERC721Exemption(si),
   ]
   return new SakeInuCommandHandler(siCommands)
 }

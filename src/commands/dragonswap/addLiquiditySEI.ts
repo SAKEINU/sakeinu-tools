@@ -1,28 +1,27 @@
 import { DragonSwapRouter } from '../../contracts/dragonswap/router'
 import { Command } from '../interface'
 import { config } from '../../common/config/config'
+import { parseUnits } from 'ethers'
 export class DragonSwapAddLiquidity implements Command {
   readonly command: string = 'addLiquiditySEI'
-  readonly description = `addLiquiditySEI <token> <amountTokenDesired> <amountTokenMin> <amountSEIMin> <to>`
-  readonly help =
-    '<token> <amountTokenDesired> <amountTokenMin> <amountSEIMin> <to>'
+  readonly description = `addLiquiditySEI <amountTokenDesired> <amountTokenMin> <amountSEIMin> <to>`
+  readonly help = '<sakeinuDesired> <sakeinuMin> <amountSEIMin> <to>'
 
   constructor(private readonly ds: DragonSwapRouter) {}
 
   async run(args: any[]): Promise<boolean> {
-    if (args.length !== 5) {
+    if (args.length !== 4) {
       console.error(this.help)
       return false
     }
     const deadline =
       Math.floor(Date.now() / 1000) + config.dsConfig.deadlineSeconds
-      console.log('args', args)
     const tx = await this.ds.addLiquiditySEI(
-      args[0],
-      args[1],
-      args[2],
+      config.sakeInu,
+      parseUnits(args[0], 18),
+      parseUnits(args[1], 18),
+      parseUnits(args[2], 18),
       args[3],
-      args[4],
       deadline,
     )
     console.log(

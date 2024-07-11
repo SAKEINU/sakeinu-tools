@@ -1,12 +1,13 @@
-import { dsInfo } from '../../commands/dragonswap/const'
+import { dsInfo } from '../dragonswap/const'
 import { Config, DragonSwapConfig, EthConfig } from './config'
 
 export const PACIFIC_CHAIN_ID = 1329
 export const ARCTIC_CHAIN_ID = 713715
 
 export const dsConfig: DragonSwapConfig = {
-  pair: '',
+  pair: dsInfo.Pair,
   router: dsInfo.Router,
+  wsei: dsInfo.WSEI,
   slippage: 0.005,
   deadlineSeconds: 60,
 }
