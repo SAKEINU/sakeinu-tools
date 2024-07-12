@@ -2,6 +2,7 @@ import { DragonSwapRouter } from '../../contracts/dragonswap/router'
 import { Command } from '../interface'
 import { config } from '../../common/config/config'
 import { parseUnits } from 'ethers'
+import { printTx } from '../../common/util'
 export class DragonSwapAddLiquidity implements Command {
   readonly command: string = 'addLiquiditySEI'
   readonly description = `addLiquiditySEI <amountTokenDesired> <amountTokenMin> <amountSEIMin> <to>`
@@ -24,9 +25,7 @@ export class DragonSwapAddLiquidity implements Command {
       args[3],
       deadline,
     )
-    console.log(
-      `hash: ${tx.hash}, from:${tx.from}, to:${tx.to} value:${tx.value.toString()}`,
-    )
+    printTx(tx)
     return true
   }
 }

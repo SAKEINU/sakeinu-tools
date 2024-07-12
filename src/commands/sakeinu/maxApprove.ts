@@ -1,4 +1,5 @@
 import { dsConfig } from '../../common/config/default.config'
+import { printTx } from '../../common/util'
 import { SakeInu } from '../../contracts/sakeinu'
 import { Command } from '../interface'
 
@@ -19,7 +20,7 @@ export class SakeInuMaxApprove implements Command {
       address,
       '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff',
     )
-    console.log(tx.hash, tx.from, tx.to, tx.value.toString())
+    printTx(tx)
     return true
   }
 }

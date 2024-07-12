@@ -1,3 +1,4 @@
+import { printTx } from '../../common/util'
 import { SakeInu } from '../../contracts/sakeinu'
 import { Command } from '../interface'
 
@@ -22,7 +23,7 @@ export class SakeInuSetNonNFTAccount implements Command {
       args[0],
       args[1] === 'true',
     )
-    console.log(tx.hash, tx.from, tx.to, tx.value.toString())
+    printTx(tx)
     return true
   }
 }

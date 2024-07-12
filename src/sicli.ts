@@ -78,8 +78,8 @@ async function bootstrap() {
     [dragonSwapInit(), sakeInuInit()],
   )
 
-  const userInput = process.argv.slice(2);
-  commandHandler.run(userInput);
+  const userInput = process.argv.slice(2)
+  commandHandler.run(userInput)
 }
 
 bootstrap()

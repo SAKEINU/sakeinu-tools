@@ -8,6 +8,7 @@ import {
 } from '../../common/dragonswap/utils'
 import { wallet } from '../../common/wallet'
 import { DragonSwapRouter } from '../../contracts/dragonswap/router'
+import { printTx } from '../../common/util'
 
 interface Balance {
   userSEI: bigint
@@ -118,6 +119,6 @@ export class DragonSwapRouterMixin {
   }
 
   postTx(tx: ContractTransactionResponse) {
-    console.log(`hash: ${tx.hash}, nonce: ${tx.nonce}`)
+    printTx(tx)
   }
 }
