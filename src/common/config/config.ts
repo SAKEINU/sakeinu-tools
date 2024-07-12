@@ -59,7 +59,7 @@ export function initEnv() {
     throw new Error('PRIVATE_KEY is required')
   }
 
-  if (!config.dsConfig.pair) {
+  if (!config.dsConfig.router) {
     throw new Error('PAIR is required')
   }
 
