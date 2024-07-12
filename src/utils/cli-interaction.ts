@@ -36,5 +36,3 @@ export async function run<T extends Command>(commands?: T) {
   }
   process.exit(0)
 }
-
-export default run

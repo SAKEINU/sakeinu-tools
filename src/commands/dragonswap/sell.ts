@@ -6,17 +6,17 @@ import { formatUnits, parseUnits } from 'ethers'
 import { wallet } from '../../common/wallet'
 import {
   balances,
-  calculateAmountOutForExactIn,
+  calculateAmountInForExactOut,
 } from '../../common/dragonswap/utils'
-export class DragonSwapBuySAKEINU implements Command {
-  readonly command: string = 'buy'
-  readonly description = `buy <seiAmountIn>`
-  readonly help = '<AmountIn>'
+export class DragonSwapSellForSEI implements Command {
+  readonly command: string = 'sellForSEI'
+  readonly description = `sellForSEI <seiAmountOut>`
+  readonly help = '<seiAmountOut>'
 
   constructor(private readonly ds: DragonSwapRouter) {}
 
   async run(args: any[]): Promise<boolean> {
-    const { pairWSEI, pairSAKEINU } = await balances(
+    const { userSAKEINU, pairWSEI, pairSAKEINU } = await balances(
       config.ethConfig.rpcUrl,
       config.sakeInu,
       config.dsConfig.wsei,
@@ -32,23 +32,30 @@ export class DragonSwapBuySAKEINU implements Command {
 
     const deadline =
       Math.floor(Date.now() / 1000) + config.dsConfig.deadlineSeconds
-    const amountIn = parseUnits(args[0], 18)
-    const amountOut = calculateAmountOutForExactIn(
-      BigInt(pairWSEI),
+    const exactAmountOut = parseUnits(args[0], 18)
+    const amountIn = calculateAmountInForExactOut(
       BigInt(pairSAKEINU),
-      amountIn,
+      BigInt(pairWSEI),
+      exactAmountOut,
     )
-    const amountOutMin =
-      (amountOut * BigInt((1 - config.dsConfig.slippage) * 1000)) / 1000n
+    const amountInMax =
+      (amountIn * BigInt(Math.round(1 + config.dsConfig.slippage) * 1000)) /
+      1000n
+
+    if (BigInt(userSAKEINU) < amountInMax) {
+      console.error(
+        `Insufficient SAKEINU balance: required ${formatUnits(amountInMax, 18)}, but got ${formatUnits(BigInt(userSAKEINU), 18)}`,
+      )
+    }
     const owner = wallet.address
 
     console.log(
-      `${reserveInfo}\namountIn(${args[0]}), amountOut ${formatUnits(amountOut, 18)} amountOutMin(${formatUnits(amountOutMin, 18)}), slippage(${config.dsConfig.slippage})`,
+      `${reserveInfo}\namountInMax: ${formatUnits(amountInMax, 18)} amountOut: ${args[0]}, slippage(${config.dsConfig.slippage})`,
     )
-    const tx = await this.ds.swapExactSEIForTokens(
-      amountIn,
-      amountOutMin,
-      [config.dsConfig.wsei, config.sakeInu],
+    const tx = await this.ds.swapTokensForExactSEI(
+      exactAmountOut,
+      amountInMax,
+      [config.sakeInu, config.dsConfig.wsei],
       owner,
       deadline,
     )

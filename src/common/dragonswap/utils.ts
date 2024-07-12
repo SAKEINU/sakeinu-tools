@@ -1,6 +1,4 @@
 import { ethers } from 'ethers'
-import { config } from '../../common/config/config'
-import { wallet } from '../../common/wallet'
 
 interface Balances {
   userSEI: string
@@ -9,11 +7,13 @@ interface Balances {
   pairSAKEINU: string
 }
 
-export async function balances(rpcUrl: string, address?: string): Promise<Balances> {
-  const sakeinu = config.sakeInu
-  const wsei = config.dsConfig.wsei
-  const pair = config.dsConfig.pair
-  const owner = address ? address : wallet.address
+export async function balances(
+  rpcUrl: string,
+  sakeinu: string,
+  wsei: string,
+  pair: string,
+  owner: string,
+): Promise<Balances> {
   // Prepare JSON-RPC batch request
   const batch = [
     {
@@ -91,14 +91,23 @@ function encodeBalanceOf(address: string): string {
   return '0x70a08231' + abiCoder.encode(['address'], [address]).substring(2)
 }
 
-export function calculateAmountOut(
-  reserveA: bigint,
-  reserveB: bigint,
+export function calculateAmountOutForExactIn(
+  reserveIn: bigint,
+  reserveOut: bigint,
   amountIn: bigint,
 ): bigint {
-  // uniswap xy=k
-  const amountInWithFee = amountIn * 997n // 0.3% fee
-  const numerator = amountInWithFee * reserveB
-  const denominator = reserveA * 1000n + amountInWithFee
+  const amountEffective = (amountIn * 997n) / 1000n // amountIn * 0.997
+  const numerator = amountEffective * reserveOut
+  const denominator = reserveIn + amountEffective
   return numerator / denominator
+}
+
+export function calculateAmountInForExactOut(
+  reserveIn: bigint,
+  reserveOut: bigint,
+  amountOut: bigint,
+): bigint {
+  const numerator = reserveIn * amountOut * 1000n
+  const denominator = (reserveOut - amountOut) * 997n
+  return numerator / denominator + BigInt(1)
 }

@@ -1,10 +1,10 @@
 import { SakeInu } from '../../contracts/sakeinu'
 import { Command } from '../interface'
 
-export class SakeInuSetERC721Exemption implements Command {
-  readonly command: string = 'setERC721Exemption'
-  readonly description = 'setERC721Exemption <address> <state-boolean>'
-  readonly help = '<address> <state true/false>'
+export class SakeInuSetNonNFTAccount implements Command {
+  readonly command: string = 'setNonNFTAcc'
+  readonly description = 'setNonNFTAcc <address> <state-boolean>'
+  readonly help = '<address> <true/false>'
 
   constructor(private readonly si: SakeInu) {}
 

@@ -1,7 +1,9 @@
-import { formatUnits, JsonRpcProvider } from 'ethers'
+import { formatUnits } from 'ethers'
 import { Command } from '../interface'
-import { balances } from './common'
+
 import { config } from '../../common/config/config'
+import { balances } from '../../common/dragonswap/utils'
+import { wallet } from '../../common/wallet'
 
 export class DragonSwapBalances implements Command {
   readonly command: string = 'balance'
@@ -10,8 +12,14 @@ export class DragonSwapBalances implements Command {
 
   constructor() {}
 
-  async run(args: any[]): Promise<boolean> {
-    const res = await balances(config.ethConfig.rpcUrl, args[0])
+  async run(): Promise<boolean> {
+    const res = await balances(
+      config.ethConfig.rpcUrl,
+      config.sakeInu,
+      config.dsConfig.wsei,
+      config.dsConfig.pair,
+      wallet.address,
+    )
 
     console.log(
       `User SEI: ${formatUnits(BigInt(res.userSEI), 18)}, SAKEINU: ${formatUnits(BigInt(res.userSAKEINU), 18)}`,
