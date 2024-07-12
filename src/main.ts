@@ -26,6 +26,7 @@ import { SakeInuSetNonNFTAccount } from './commands/sakeinu/setERC721Exemption'
 import { DragonSwapBuy } from './commands/dragonswap/buy'
 import { DragonSwapSellForSEI } from './commands/dragonswap/sellForSEI'
 import { DragonSwapBuyForSAKEINU } from './commands/dragonswap/buyForSAKEINU'
+import { DragonSwapSell } from './commands/dragonswap/sell'
 
 function init() {
   initWallet()
@@ -43,6 +44,7 @@ function dragonSwapInit(): Command {
   const dsCommands: Command[] = [
     new DragonSwapBuy(dsRouter),
     new DragonSwapBuyForSAKEINU(dsRouter),
+    new DragonSwapSell(dsRouter),
     new DragonSwapSellForSEI(dsRouter),
     new DragonSwapBalances(),
     new DragonSwapAddLiquidity(dsRouter),

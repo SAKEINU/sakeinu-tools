@@ -7,7 +7,6 @@ import { wallet } from '../../common/wallet'
 import {
   balances,
   calculateAmountInForExactOut,
-  calculateAmountOutForExactIn,
 } from '../../common/dragonswap/utils'
 export class DragonSwapBuyForSAKEINU implements Command {
   readonly command: string = 'buyForSAKEINU'

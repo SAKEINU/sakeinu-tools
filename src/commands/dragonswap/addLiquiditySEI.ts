@@ -11,7 +11,7 @@ export class DragonSwapAddLiquidity implements Command {
 
   async run(args: any[]): Promise<boolean> {
     if (args.length !== 4) {
-      console.error(this.help)
+      console.error(this.command, ' ', this.help)
       return false
     }
     const deadline =

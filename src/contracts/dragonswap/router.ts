@@ -40,6 +40,24 @@ export class DragonSwapRouter {
     )
   }
 
+  async swapExactTokensForSEI(
+    // <amountOut> <path with comma separate> <to>
+    // write the types for the arguments
+    amountIn: string | bigint,
+    amountOut: string | bigint,
+    path: string[],
+    to: string,
+    deadline: number,
+  ): Promise<ContractTransactionResponse> {
+    return await this.contract.swapExactTokensForSEI(
+      amountIn,
+      amountOut,
+      path,
+      to,
+      deadline,
+    )
+  }
+
   async swapTokensForExactSEI(
     // <amountOut> <path with comma separate> <to>
     // write the types for the arguments
