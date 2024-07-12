@@ -6,12 +6,13 @@ import { formatUnits, parseUnits } from 'ethers'
 import { wallet } from '../../common/wallet'
 import {
   balances,
+  calculateAmountInForExactOut,
   calculateAmountOutForExactIn,
 } from '../../common/dragonswap/utils'
-export class DragonSwapBuy implements Command {
-  readonly command: string = 'buy'
-  readonly description = `buy <seiAmountIn>`
-  readonly help = '<AmountIn>'
+export class DragonSwapBuyForSAKEINU implements Command {
+  readonly command: string = 'buyForSAKEINU'
+  readonly description = `buyForSAKEINU <sakeinuAmountOut>`
+  readonly help = '<sakeinuAmountOut>'
 
   constructor(private readonly ds: DragonSwapRouter) {}
 
@@ -32,22 +33,24 @@ export class DragonSwapBuy implements Command {
 
     const deadline =
       Math.floor(Date.now() / 1000) + config.dsConfig.deadlineSeconds
-    const amountIn = parseUnits(args[0], 18)
-    const amountOut = calculateAmountOutForExactIn(
+    const exactAmountOut = parseUnits(args[0], 18)
+    const amountIn = calculateAmountInForExactOut(
       BigInt(pairWSEI),
       BigInt(pairSAKEINU),
-      amountIn,
+      exactAmountOut,
     )
-    const amountOutMin =
-      (amountOut * BigInt((1 - config.dsConfig.slippage) * 1000)) / 1000n
+    const amountInMax =
+      (amountIn * BigInt(Math.round(1 + config.dsConfig.slippage) * 1000)) /
+      1000n
     const owner = wallet.address
 
     console.log(
-      `${reserveInfo}\namountIn(${args[0]}), amountOut ${formatUnits(amountOut, 18)} amountOutMin(${formatUnits(amountOutMin, 18)}), slippage(${config.dsConfig.slippage})`,
+      `${reserveInfo}\namountInMax: ${formatUnits(amountInMax, 18)} amountOut: ${args[0]}, slippage(${config.dsConfig.slippage})`,
     )
-    const tx = await this.ds.swapExactSEIForTokens(
-      amountIn,
-      amountOutMin,
+
+    const tx = await this.ds.swapSEIForExactTokens(
+      exactAmountOut,
+      amountInMax,
       [config.dsConfig.wsei, config.sakeInu],
       owner,
       deadline,

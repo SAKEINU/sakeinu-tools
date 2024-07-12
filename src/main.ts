@@ -23,8 +23,9 @@ import { DragonSwapRouter } from './contracts/dragonswap/router'
 
 import { run as runCli } from './utils/cli-interaction'
 import { SakeInuSetNonNFTAccount } from './commands/sakeinu/setERC721Exemption'
-import { DragonSwapBuySAKEINU } from './commands/dragonswap/buy'
-import { DragonSwapSellForSEI } from './commands/dragonswap/sell'
+import { DragonSwapBuy } from './commands/dragonswap/buy'
+import { DragonSwapSellForSEI } from './commands/dragonswap/sellForSEI'
+import { DragonSwapBuyForSAKEINU } from './commands/dragonswap/buyForSAKEINU'
 
 function init() {
   initWallet()
@@ -40,7 +41,8 @@ function dragonSwapInit(): Command {
   const dsRouter = new DragonSwapRouter(dsRouterContract)
   // TODO: add more commands
   const dsCommands: Command[] = [
-    new DragonSwapBuySAKEINU(dsRouter),
+    new DragonSwapBuy(dsRouter),
+    new DragonSwapBuyForSAKEINU(dsRouter),
     new DragonSwapSellForSEI(dsRouter),
     new DragonSwapBalances(),
     new DragonSwapAddLiquidity(dsRouter),
