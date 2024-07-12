@@ -1,60 +1,46 @@
 import { DragonSwapRouter } from '../../contracts/dragonswap/router'
 import { Command } from '../interface'
 import { config } from '../../common/config/config'
-import { formatUnits, parseUnits } from 'ethers'
+import { parseUnits } from 'ethers'
 
 import { wallet } from '../../common/wallet'
-import {
-  balances,
-  calculateAmountInForExactOut,
-} from '../../common/dragonswap/utils'
-export class DragonSwapBuyForSAKEINU implements Command {
+import { DragonSwapRouterMixin } from './mixin'
+export class DragonSwapBuyForSAKEINU
+  extends DragonSwapRouterMixin
+  implements Command
+{
   readonly command: string = 'buyForSAKEINU'
   readonly description = `buyForSAKEINU <sakeinuAmountOut>`
   readonly help = '<sakeinuAmountOut>'
 
-  constructor(private readonly ds: DragonSwapRouter) {}
+  constructor(ds: DragonSwapRouter) {
+    super(ds)
+  }
 
   async run(args: any[]): Promise<boolean> {
-    const { pairWSEI, pairSAKEINU } = await balances(
-      config.ethConfig.rpcUrl,
-      config.sakeInu,
-      config.dsConfig.wsei,
-      config.dsConfig.pair,
-      wallet.address,
-    )
-    const reserveInfo = `current reserve: WSEI(${formatUnits(BigInt(pairWSEI), 18)})-SAKEINU(${formatUnits(BigInt(pairSAKEINU), 18)})`
-
-    if (args.length === 0 || args[0] === 'help') {
-      console.error(`${reserveInfo}\n`, this.help)
-      return false
-    }
-
-    const deadline =
-      Math.floor(Date.now() / 1000) + config.dsConfig.deadlineSeconds
-    const exactAmountOut = parseUnits(args[0], 18)
-    const amountIn = calculateAmountInForExactOut(
-      BigInt(pairWSEI),
-      BigInt(pairSAKEINU),
-      exactAmountOut,
-    )
-    const amountInMax =
-      (amountIn * BigInt(Math.round(1 + config.dsConfig.slippage) * 1000)) /
-      1000n
-    const owner = wallet.address
-
-    console.log(
-      `${reserveInfo}\namountInMax: ${formatUnits(amountInMax, 18)} amountOut: ${args[0]}, slippage(${config.dsConfig.slippage})`,
+    const { pairWSEI, pairSAKEINU } = await super.prepare(
+      args,
+      1,
+      this.command,
+      this.help,
     )
 
-    const tx = await this.ds.swapSEIForExactTokens(
-      exactAmountOut,
+    const sakeinuExactAmountOut = parseUnits(args[0], 18)
+    const { amountInMax } = this.calculateForExactOut(
+      pairWSEI,
+      pairSAKEINU,
+      sakeinuExactAmountOut,
+    )
+
+    this.printExactOut(amountInMax, sakeinuExactAmountOut)
+    await this.send('swapSEIForExactTokens', [
+      sakeinuExactAmountOut,
       amountInMax,
       [config.dsConfig.wsei, config.sakeInu],
-      owner,
-      deadline,
-    )
-    console.log(tx.hash)
+      wallet.address,
+      Math.floor(Date.now() / 1000) + config.dsConfig.deadlineSeconds,
+    ])
+
     return true
   }
 }

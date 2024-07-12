@@ -10,23 +10,28 @@ import routerAbi from './contracts/dragonswap/router.json'
 
 import { wallet, initWallet } from './common/wallet'
 import { ethers } from 'ethers'
-import { DragonSwapCommandHandler } from './commands/dragonswap/handler'
 
 import { Command } from './commands/interface'
-import { DragonSwapBalances } from './commands/dragonswap/balances'
+
 import { CommandHandler } from './commands'
 import { SakeInuCommandHandler } from './commands/sakeinu/handler'
 import { SakeInuMaxApprove } from './commands/sakeinu/maxApprove'
 import { SakeInu } from './contracts/sakeinu'
-import { DragonSwapAddLiquidity } from './commands/dragonswap/addLiquiditySEI'
+
 import { DragonSwapRouter } from './contracts/dragonswap/router'
 
 import { run as runCli } from './utils/cli-interaction'
 import { SakeInuSetNonNFTAccount } from './commands/sakeinu/setERC721Exemption'
-import { DragonSwapBuy } from './commands/dragonswap/buy'
-import { DragonSwapSellForSEI } from './commands/dragonswap/sellForSEI'
-import { DragonSwapBuyForSAKEINU } from './commands/dragonswap/buyForSAKEINU'
-import { DragonSwapSell } from './commands/dragonswap/sell'
+
+import {
+  DragonSwapCommandHandler,
+  DragonSwapBalances,
+  DragonSwapAddLiquidity,
+  DragonSwapBuy,
+  DragonSwapSellForSEI,
+  DragonSwapBuyForSAKEINU,
+  DragonSwapSell,
+} from './commands/dragonswap'
 
 function init() {
   initWallet()

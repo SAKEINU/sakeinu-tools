@@ -23,8 +23,6 @@ export class DragonSwapRouter {
   }
 
   async swapExactSEIForTokens(
-    // <amountOut> <path with comma separate> <to>
-    // write the types for the arguments
     amountIn: string | bigint,
     amountOut: string | bigint,
     path: string[],
@@ -41,8 +39,6 @@ export class DragonSwapRouter {
   }
 
   async swapExactTokensForSEI(
-    // <amountOut> <path with comma separate> <to>
-    // write the types for the arguments
     amountIn: string | bigint,
     amountOut: string | bigint,
     path: string[],
@@ -59,8 +55,6 @@ export class DragonSwapRouter {
   }
 
   async swapTokensForExactSEI(
-    // <amountOut> <path with comma separate> <to>
-    // write the types for the arguments
     amountOut: string | bigint,
     amountInMax: string | bigint,
     path: string[],
@@ -77,8 +71,6 @@ export class DragonSwapRouter {
   }
 
   async swapSEIForExactTokens(
-    // <amountOut> <path with comma separate> <to>
-    // write the types for the arguments
     amountOut: string | bigint,
     amountInMax: string | bigint,
     path: string[],

@@ -1,6 +1,6 @@
 import { ethers } from 'ethers'
 
-interface Balances {
+export interface Balance {
   userSEI: string
   userSAKEINU: string
   pairWSEI: string
@@ -13,7 +13,7 @@ export async function balances(
   wsei: string,
   pair: string,
   owner: string,
-): Promise<Balances> {
+): Promise<Balance> {
   // Prepare JSON-RPC batch request
   const batch = [
     {
