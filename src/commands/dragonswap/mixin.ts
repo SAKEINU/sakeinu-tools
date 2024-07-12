@@ -51,7 +51,7 @@ export class DragonSwapRouterMixin {
       console.error(`${userInfo}\n, ${reserveInfo}\n`, command, help)
       return null
     }
-
+    console.log(`${userInfo}\n${reserveInfo}\n`)
     return {
       userSEI: BigInt(userSEI),
       userSAKEINU: BigInt(userSAKEINU),
