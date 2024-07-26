@@ -1,7 +1,7 @@
-import { dsConfig } from '../../common/config/default.config'
 import { printTx } from '../../common/util'
 import { SakeInu } from '../../contracts/sakeinu'
 import { Command } from '../interface'
+import { config } from '../../common/config/config'
 
 export class SakeInuMaxApprove implements Command {
   readonly command: string = 'approveMax'
@@ -11,7 +11,7 @@ export class SakeInuMaxApprove implements Command {
   constructor(private readonly si: SakeInu) {}
 
   async run(args: any[]): Promise<boolean> {
-    let address = dsConfig.router
+    let address = config.dsConfig.router
     if (args[0]) {
       address = args[0]
     }
