@@ -33,6 +33,11 @@ import {
   DragonSwapBuyForSAKEINU,
   DragonSwapSell,
 } from './commands/dragonswap'
+import {
+  SakeInuIsLocked,
+  SakeInuLockERC721,
+  SakeInuUnlockERC721,
+} from './commands/sakeinu'
 
 function init() {
   initWallet()
@@ -65,6 +70,9 @@ function sakeInuInit(): Command {
   const siCommands: Command[] = [
     new SakeInuMaxApprove(si),
     new SakeInuSetNonNFTAccount(si),
+    new SakeInuLockERC721(si),
+    new SakeInuIsLocked(si),
+    new SakeInuUnlockERC721(si),
   ]
   return new SakeInuCommandHandler(siCommands)
 }

@@ -1,3 +1,6 @@
 export * from './maxApprove'
 export * from './setERC721Exemption'
+export * from './lockERC721'
+export * from './unlockERC721'
+export * from './isLocked'
 export * from './handler'
