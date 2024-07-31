@@ -10,8 +10,6 @@
     "sicli": "dist/sicli.js"
   },
   "scripts": {
-    "link": "yarn build && npm link",
-    "unlink": "npm unlink -g",
     "pre-commit": "lint-staged",
     "build": "tsc -p tsconfig.json",
     "start": "yarn build && node dist/main.js",

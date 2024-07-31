@@ -39,6 +39,7 @@ yarn start
 ## Installing the Tool (sicli)
 To install the `sicli` command-line interface globally on your system, run:
 ```sh
+yarn build
 yarn link
 ```
 
@@ -56,7 +57,15 @@ CHAIN_ID=<CHAIN_ID>
 RPC_NODE=<EVM_RPC_NODE>
 
 # Wallet
-PRIVATE_KEY=<YOUR_PRIVATE_KEY>
+## Must provide either `WALLET_NAME`, `WALLET_MNEMONIC` or `WALLET_PRIVATE_KEY`
+### WALLET_MNEMONIC is preferred, if you provide WALLET_PRIVATE_KEY, WALLET_MNEMONIC will be ignored
+WALLET_MNEMONIC=
+WALLET_INDEX= # Optional default is 0 you must choose HD wallet or provide mnemonic
+
+WALLET_PRIVATE_KEY=
+
+WALLET_NAME=<YOUR_SAVED_WALLET_NAME> # Optional provide when you want to named wallet from the keystore, default is default
+WALLET_PASSWORD=<WALLET_PASSWORD_FOR_ENCRYPTION_AND_DECRYPTION> # Optional default is empty string
 
 # DragonSwap
 DS_PAIR=<DRAGONSWAP_PAIR_ADDRESS>
@@ -67,6 +76,17 @@ DS_DEADLINE=<TRANSACTION_DEADLINE_IN_SECONDS>
 # SAKEINU
 SI_SAKEINU=<SAKEINU_ADDRESS>
 ```
+
+#### Wallet load priority
+1. Private key based wallet
+2. mnemonic based wallet
+3. named wallet from keystore
+
+Do not provide multiple wallet options at the same time, it will make unexpected behavior.
+
+e.g.)
+- if you provide `WALLET_MNEMONIC` and `WALLET_PRIVATE_KEY` at the same time, it will use `WALLET_PRIVATE_KEY` only.
+- if you provide `WALLET_NAME` and `WALLET_MNEMONIC` at the same time, it will use `WALLET_MNEMONIC` only.
 
 ### Example Usage of `sicli` Commands
 To interact with the DragonSwap and SAKEINU functionalities, you use the `sicli`  followed by specific commands(`ds`, `si`). Here are examples based on the commands implemented in your workspace.

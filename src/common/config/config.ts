@@ -11,11 +11,20 @@ export interface DragonSwapConfig {
 export interface EthConfig {
   rpcUrl: string
   chainId: number
-  privateKey: string
+}
+
+export interface WalletConfig {
+  mnemonic?: string
+  password?: string
+  index?: number
+  privateKey?: string
+  name?: string
 }
 
 export interface Config {
   sakeInu: string
+
+  walletConfig?: WalletConfig
 
   // network related
   ethConfig: EthConfig
@@ -29,7 +38,6 @@ export function initEnv() {
   config = {
     ethConfig: {
       rpcUrl: process.env.RPC_NODE || defaultConfig.ethConfig.rpcUrl,
-      privateKey: process.env.PRIVATE_KEY || defaultConfig.ethConfig.privateKey,
       chainId: parseInt(
         process.env.CHAIN_ID || defaultConfig.ethConfig.chainId.toString(),
       ),
@@ -49,14 +57,34 @@ export function initEnv() {
     },
 
     sakeInu: process.env.SI_SAKEINU || defaultConfig.sakeInu,
+
+    walletConfig: {
+      index: process.env.WALLET_INDEX
+        ? parseInt(process.env.WALLET_INDEX)
+        : defaultConfig.walletConfig?.index,
+      name: process.env.WALLET_NAME || defaultConfig.walletConfig?.name,
+      password:
+        process.env.WALLET_PASSWORD || defaultConfig.walletConfig?.password,
+      mnemonic:
+        process.env.WALLET_MNEMONIC || defaultConfig.walletConfig?.mnemonic,
+      privateKey:
+        process.env.WALLET_PRIVATE_KEY ||
+        defaultConfig.walletConfig?.privateKey,
+    },
   }
 
   if (!config.ethConfig.rpcUrl) {
     throw new Error('RPC_NODE is required')
   }
 
-  if (!config.ethConfig.privateKey) {
-    throw new Error('PRIVATE_KEY is required')
+  if (
+    !config.walletConfig?.name &&
+    !config.walletConfig?.mnemonic &&
+    !config.walletConfig?.privateKey
+  ) {
+    throw new Error(
+      'WALLET_NAME, WALLET_MNEMONIC or WALLET_PRIVATE_KEY is required',
+    )
   }
 
   if (!config.dsConfig.router) {
