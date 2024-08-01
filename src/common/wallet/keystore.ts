@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'fs'
+import { readFileSync, writeFileSync, existsSync } from 'fs'
 import path from 'path'
 
 type Keystore = {
@@ -6,11 +6,11 @@ type Keystore = {
 }
 
 let keystore: Keystore = {}
-let keystoreFilePath: string = path.resolve(__dirname, 'keystore.json')
+let keystoreFilePath: string = path.resolve(process.cwd(), 'keystore.json')
 const initialized = false
 
 // Function to read keystore from file
-function loadKeystore(filePath?: string, fileName?: string) {
+function load(filePath?: string, fileName?: string) {
   if (initialized) {
     return
   }
@@ -18,6 +18,13 @@ function loadKeystore(filePath?: string, fileName?: string) {
   keystoreFilePath = filePath
     ? path.resolve(filePath, fileName)
     : keystoreFilePath
+
+  if (!existsSync(keystoreFilePath)) {
+    console.warn(`there is no keystore file at ${keystoreFilePath}`)
+    console.warn(`Creating keystore file at ${keystoreFilePath}`)
+    writeKeystore()
+    return
+  }
 
   try {
     const data = readFileSync(keystoreFilePath, 'utf8')
@@ -31,6 +38,7 @@ function loadKeystore(filePath?: string, fileName?: string) {
 // Function to write keystore to file
 function writeKeystore(): boolean {
   try {
+    console.log(`Writing keystore to ${keystoreFilePath}`)
     const data = JSON.stringify(keystore, null, 2)
     writeFileSync(keystoreFilePath, data, 'utf8')
     return true
@@ -45,6 +53,7 @@ function addWalletToKeystore(
   walletName: string,
   encodedWallet: string,
 ): boolean {
+  console.log(keystore)
   if (keystore[walletName]) {
     console.error(
       'Wallet with the same name already exists in the keystore, use update',
@@ -73,11 +82,15 @@ function updateWalletInKeystore(
 
 // Retrieve a wallet from the keystore
 function getWalletKey(walletName: string): string | undefined {
-  return keystore[walletName]
+  let encodedKey = keystore[walletName]
+  if (encodedKey) {
+    encodedKey = Buffer.from(encodedKey, 'base64').toString('utf8')
+  }
+  return encodedKey
 }
 
 export default {
-  loadKeystore,
+  load,
   writeKeystore,
   addWalletToKeystore,
   updateWalletInKeystore,

@@ -10,7 +10,7 @@ initEnv()
 import siAbi from './contracts/sakeinu/abi.json'
 import routerAbi from './contracts/dragonswap/router.json'
 
-import { wallet, initWallet } from './common/wallet'
+import walletModule from './common/wallet'
 import { ethers } from 'ethers'
 
 import { Command } from './commands/interface'
@@ -40,14 +40,14 @@ import {
 } from './commands/sakeinu'
 
 function init() {
-  initWallet()
+  walletModule.init()
 }
 
 function dragonSwapInit(): Command {
   const dsRouterContract = new ethers.Contract(
     config.dsConfig.router,
     routerAbi,
-    wallet,
+    walletModule.instance(),
   )
 
   const dsRouter = new DragonSwapRouter(dsRouterContract)
@@ -64,7 +64,11 @@ function dragonSwapInit(): Command {
 }
 
 function sakeInuInit(): Command {
-  const siContract = new ethers.Contract(config.sakeInu, siAbi, wallet)
+  const siContract = new ethers.Contract(
+    config.sakeInu,
+    siAbi,
+    walletModule.instance(),
+  )
   const si = new SakeInu(siContract)
 
   const siCommands: Command[] = [
@@ -81,7 +85,7 @@ async function bootstrap() {
   init()
   const commandHandler = new CommandHandler(
     '',
-    'cli tools for SAKEINU(si) and DragonSwap(ds)',
+    'cli tools for SAKEINU(si), DragonSwap(ds) and Wallet(wallet)',
     '<command> <subcommand> <args...> ',
     [dragonSwapInit(), sakeInuInit()],
   )

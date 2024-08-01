@@ -1,22 +1,25 @@
 import { ethers } from 'ethers'
 import { config } from '../config/config'
-import { createHDWallet, load } from './wallet'
+import helper from './helper'
+import keystore from './keystore'
 
-export let wallet: ethers.Wallet | ethers.HDNodeWallet
+let instance: ethers.Wallet | ethers.HDNodeWallet | null = null
 
-export function initWallet() {
+function init() {
   const wc = config.walletConfig
   if (!wc) {
     throw new Error('Wallet config is missing')
   }
   if (!wc.name && !wc?.mnemonic && !wc?.privateKey) {
-    throw new Error('WALLET_NAME, WALLET_MNEMONIC or WALLET_PRIVATE_KEY is required')
+    console.warn('Wallet is not set')
   }
 
   if (wc.name) {
+    // todo add path to keystore
+    keystore.load()
     console.log(`Loading wallet ${wc.name}`)
-    wallet = load(wc.name, wc.password)
-    if (wallet === undefined) {
+    instance = helper.load(wc.name, wc.password)
+    if (instance == undefined) {
       console.warn(`Wallet ${wc.name} not found`)
     }
   }
@@ -28,7 +31,7 @@ export function initWallet() {
 
   if (wc?.mnemonic) {
     console.log(`Creating HD wallet from mnemonic`)
-    wallet = createHDWallet(wc.mnemonic, wc.password).connect(provider)
+    instance = helper.createHDWallet(wc.mnemonic, wc.password).connect(provider)
   }
 
   if (wc?.privateKey) {
@@ -37,6 +40,21 @@ export function initWallet() {
         'Both the mnemonic and private key are provided, using the PRIVATE KEY',
       )
     }
-    wallet = new ethers.Wallet(wc.privateKey, provider)
+    console.log(`Creating wallet from private key`)
+    instance = new ethers.Wallet(wc.privateKey, provider)
   }
+}
+
+function getInstance(): ethers.Wallet | ethers.HDNodeWallet {
+  if (instance == null) {
+    throw new Error('Wallet not initialized')
+  }
+  return instance
+}
+
+export default {
+  init,
+  instance: getInstance,
+  helper,
+  keystore,
 }

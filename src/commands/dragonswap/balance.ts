@@ -3,7 +3,7 @@ import { Command } from '../interface'
 
 import { config } from '../../common/config/config'
 import { balances } from '../../common/dragonswap/utils'
-import { wallet } from '../../common/wallet'
+import wallet from '../../common/wallet'
 
 export class DragonSwapBalances implements Command {
   readonly command: string = 'balance'
@@ -18,7 +18,7 @@ export class DragonSwapBalances implements Command {
       config.sakeInu,
       config.dsConfig.wsei,
       config.dsConfig.pair,
-      wallet.address,
+      wallet.instance().address,
     )
 
     console.log(

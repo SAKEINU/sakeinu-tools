@@ -3,7 +3,7 @@ import { Command } from '../interface'
 import { config } from '../../common/config/config'
 import { parseUnits } from 'ethers'
 
-import { wallet } from '../../common/wallet'
+import wallet from '../../common/wallet'
 
 import { DragonSwapRouterMixin } from './mixin'
 export class DragonSwapSellForSEI
@@ -37,7 +37,7 @@ export class DragonSwapSellForSEI
       seiExactAmountOut,
       amountInMax,
       [config.sakeInu, config.dsConfig.wsei],
-      wallet.address,
+      wallet.instance().address,
       Math.floor(Date.now() / 1000) + config.dsConfig.deadlineSeconds,
     ])
     return true

@@ -82,8 +82,8 @@ export function initEnv() {
     !config.walletConfig?.mnemonic &&
     !config.walletConfig?.privateKey
   ) {
-    throw new Error(
-      'WALLET_NAME, WALLET_MNEMONIC or WALLET_PRIVATE_KEY is required',
+    console.warn(
+      `Wallet config is not set properly, you can't sign transactions`,
     )
   }
 

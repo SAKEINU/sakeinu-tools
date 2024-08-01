@@ -6,7 +6,7 @@ import {
   calculateAmountInForExactOut,
   calculateAmountOutForExactIn,
 } from '../../common/dragonswap/utils'
-import { wallet } from '../../common/wallet'
+import wallet from '../../common/wallet'
 import { DragonSwapRouter } from '../../contracts/dragonswap/router'
 import { printTx } from '../../common/util'
 
@@ -41,7 +41,7 @@ export class DragonSwapRouterMixin {
       config.sakeInu,
       config.dsConfig.wsei,
       config.dsConfig.pair,
-      wallet.address,
+      wallet.instance().address,
     )
 
     const userInfo = `User SEI: ${formatUnits(BigInt(userSEI), 18)}, SAKEINU: ${formatUnits(BigInt(userSAKEINU), 18)}, slippage(${config.dsConfig.slippage})`
