@@ -10,14 +10,15 @@ function init() {
   if (!wc) {
     throw new Error('Wallet config is missing')
   }
+
   if (!wc.name && !wc?.mnemonic && !wc?.privateKey) {
-    console.warn('Wallet is not set')
+    console.error('Wallet is not set, may occur error')
   }
 
   if (wc.name) {
     // todo add path to keystore
     keystore.load()
-    console.log(`Loading wallet ${wc.name}`)
+    console.info(`Loading wallet ${wc.name} from the keystore`)
     instance = helper.load(wc.name, wc.password)
     if (instance == undefined) {
       console.warn(`Wallet ${wc.name} not found`)
@@ -30,24 +31,47 @@ function init() {
   const provider = new ethers.JsonRpcProvider(config.ethConfig.rpcUrl)
 
   if (wc?.mnemonic) {
-    console.log(`Creating HD wallet from mnemonic`)
+    if (wc?.name) {
+      console.warn(
+        'Both the wallet and mnemonic are provided, using the MNEMONIC',
+      )
+    }
+    console.info(`Creating HD wallet from provided mnemonic`)
     instance = helper.createHDWallet(wc.mnemonic, wc.password).connect(provider)
   }
 
   if (wc?.privateKey) {
+    if (wc?.name) {
+      console.warn(
+        'Both the wallet and private key are provided, using the PRIVATE KEY',
+      )
+    }
+
     if (wc?.mnemonic) {
       console.warn(
         'Both the mnemonic and private key are provided, using the PRIVATE KEY',
       )
     }
-    console.log(`Creating wallet from private key`)
+    console.info(`Creating wallet from the provided private key`)
     instance = new ethers.Wallet(wc.privateKey, provider)
+  }
+
+  console.log(`wallet address: ${instance?.address}`)
+  if (instance && wc.index) {
+    if (helper.isStandardWallet(instance)) {
+      throw new Error('Index is only supported for HD Wallet')
+    }
+    if (helper.isHDNodeWallet(instance)) {
+      console.info(`Deriving wallet from HD wallet at index ${wc.index}`)
+      instance = helper.deriveChild(instance, wc.index)
+      console.log(`wallet address: ${instance.address}`)
+    }
   }
 }
 
 function getInstance(): ethers.Wallet | ethers.HDNodeWallet {
   if (instance == null) {
-    throw new Error('Wallet not initialized')
+    console.error('Wallet instance is not initialized')
   }
   return instance
 }

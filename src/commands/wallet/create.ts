@@ -1,6 +1,6 @@
 import { Command } from '../interface'
 import wallet from '../../common/wallet/helper'
-import { askQuestion } from '../../common/util'
+import { askSecrets } from '../../common/util'
 
 export class WalletCreate implements Command {
   readonly command: string = 'create'
@@ -15,11 +15,11 @@ export class WalletCreate implements Command {
       return false
     }
 
-    const mnemonic = await askQuestion('Enter your mnemonic: ')
-    const password = await askQuestion('Enter your password: ')
+    const mnemonic = await askSecrets('Enter your mnemonic: ')
+    const password = await askSecrets('Enter your password: ')
     const name = args[0]
     const wlt = wallet.createHDWallet(mnemonic, password)
-    wallet.save(name, wlt)
+    wallet.save(name, wlt, password)
     return true
   }
 }

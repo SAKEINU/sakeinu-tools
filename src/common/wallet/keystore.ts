@@ -41,6 +41,8 @@ function writeKeystore(): boolean {
     console.log(`Writing keystore to ${keystoreFilePath}`)
     const data = JSON.stringify(keystore, null, 2)
     writeFileSync(keystoreFilePath, data, 'utf8')
+    console.log(`Keystore written successfully`)
+    console.log(keystore)
     return true
   } catch (error) {
     console.error('Error writing keystore file:', error)
@@ -53,7 +55,6 @@ function addWalletToKeystore(
   walletName: string,
   encodedWallet: string,
 ): boolean {
-  console.log(keystore)
   if (keystore[walletName]) {
     console.error(
       'Wallet with the same name already exists in the keystore, use update',

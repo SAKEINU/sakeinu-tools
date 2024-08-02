@@ -1,6 +1,6 @@
 import { Command } from '../interface'
 import wallet from '../../common/wallet/helper'
-import { askQuestion } from '../../common/util'
+import { askSecrets } from '../../common/util'
 
 export class WalletMnemonic implements Command {
   readonly command: string = 'mnemonic'
@@ -16,13 +16,13 @@ export class WalletMnemonic implements Command {
     }
 
     const name = args[0]
-    const password = await askQuestion('Enter your password: ')
+    const password = await askSecrets('Enter your password: ')
     const wlt = wallet.load(name, password)
     if (!wlt) {
       console.warn(`Wallet ${name} not found`)
       return false
     }
-    if (wallet.isStandardWallet(wlt)) {
+    if (!wallet.isHDNodeWallet(wlt)) {
       console.error('Wallet is not HD Wallet')
       return false
     }
