@@ -36,6 +36,11 @@ import {
   SakeInuLockERC721,
   SakeInuUnlockERC721,
 } from './commands/sakeinu'
+import {
+  WalletCommandHandler,
+  WalletCreate,
+  WalletMnemonic,
+} from './commands/wallet'
 
 function init() {
   wallet.init()
@@ -79,13 +84,18 @@ function sakeInuInit(): Command {
   return new SakeInuCommandHandler(siCommands)
 }
 
+function walletInit(): Command {
+  const walletCommands: Command[] = [new WalletCreate(), new WalletMnemonic()]
+  return new WalletCommandHandler(walletCommands)
+}
+
 export async function bootstrap(): Promise<CommandHandler> {
   init()
   const commandHandler = new CommandHandler(
     '',
     'cli tools for SAKEINU(si), DragonSwap(ds) and Wallet(wallet)',
     '<command> <subcommand> <args...> ',
-    [dragonSwapInit(), sakeInuInit()],
+    [dragonSwapInit(), sakeInuInit(), walletInit()],
   )
 
   return commandHandler
