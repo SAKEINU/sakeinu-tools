@@ -41,6 +41,7 @@ import {
   WalletCreate,
   WalletMnemonic,
 } from './commands/wallet'
+import { WalletPrivateKey } from './commands/wallet/privateKey'
 
 function init() {
   wallet.init()
@@ -85,7 +86,11 @@ function sakeInuInit(): Command {
 }
 
 function walletInit(): Command {
-  const walletCommands: Command[] = [new WalletCreate(), new WalletMnemonic()]
+  const walletCommands: Command[] = [
+    new WalletCreate(),
+    new WalletMnemonic(),
+    new WalletPrivateKey(),
+  ]
   return new WalletCommandHandler(walletCommands)
 }
 

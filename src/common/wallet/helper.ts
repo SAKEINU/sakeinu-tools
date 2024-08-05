@@ -38,7 +38,10 @@ function createHDWalletFromPhrase(
 
   console.log(`Creating ${walletType} HD wallet from mnemonic`)
   const mnemonic = Mnemonic.fromPhrase(phrase)
-  return HDNodeWallet.fromMnemonic(mnemonic, indexedAccountPath(walletType, index))
+  return HDNodeWallet.fromMnemonic(
+    mnemonic,
+    indexedAccountPath(walletType, index),
+  )
 }
 
 function deriveChild(wallet: HDNodeWallet, index: number): HDNodeWallet {
@@ -79,7 +82,6 @@ function save(
     Buffer.from(wallet.encryptSync(password)).toString('base64'),
   )
 }
-
 
 function indexedAccountPath(type: HDPathType, index: number): string {
   if (type === 'ETHER') {

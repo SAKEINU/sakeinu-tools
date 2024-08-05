@@ -11,7 +11,7 @@ export class WalletCreate implements Command {
 
   async run(args: any[]): Promise<boolean> {
     if (args.length < 1) {
-      console.log('Please provide a name for the wallet')
+      console.warn('Please provide a name for the wallet')
       return false
     }
 
