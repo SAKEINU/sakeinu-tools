@@ -93,9 +93,11 @@ function walletInit(): Command {
   return new WalletCommandHandler(walletCommands)
 }
 
-export async function bootstrap(argv?: string[]): Promise<CommandHandler> {
+export async function bootstrap(
+  isWallet: boolean = false,
+): Promise<CommandHandler> {
   let commands: Command[] = [walletInit()]
-  if (argv[0] !== 'wallet') {
+  if (!isWallet) {
     init()
     commands = commands.concat([sakeInuInit(), dragonSwapInit()])
   }
