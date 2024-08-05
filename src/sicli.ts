@@ -3,8 +3,8 @@
 import { bootstrap } from './bootstrap'
 
 async function main() {
-  const handler = await bootstrap()
   const userInput = process.argv.slice(2)
+  const handler = await bootstrap(userInput)
   handler.run(userInput)
 }
 

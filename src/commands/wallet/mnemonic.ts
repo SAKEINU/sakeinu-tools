@@ -10,7 +10,7 @@ export class WalletMnemonic implements Command {
   constructor() {}
 
   async run(args: any[]): Promise<boolean> {
-    if (args.length < 1) {
+    if (args.length < 1 || args[0] === 'help') {
       console.warn('Please provide a name for the wallet')
       return false
     }

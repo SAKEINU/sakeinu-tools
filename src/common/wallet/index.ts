@@ -70,9 +70,6 @@ function init() {
 }
 
 function getInstance(): ethers.Wallet | ethers.HDNodeWallet {
-  if (instance == null) {
-    console.error('Wallet instance is not initialized')
-  }
   return instance
 }
 

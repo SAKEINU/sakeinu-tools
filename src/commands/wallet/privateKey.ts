@@ -11,7 +11,7 @@ export class WalletPrivateKey implements Command {
 
   async run(args: any[]): Promise<boolean> {
     if (args.length < 2) {
-      console.warn('Please provide a name and index for the wallet')
+      console.warn('Please provide a {name} {index} for the wallet')
       return false
     }
 

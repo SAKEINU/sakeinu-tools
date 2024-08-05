@@ -103,10 +103,18 @@ sicli si setNonNFTAcc 0xa4cF2F53D1195aDDdE9e4D3aCa54f556895712f2 true
 sicli help
 
 # output
-#  <ds> <<help|commands> for subcommand(s)>
+#  <wallet> <<help|commands> for subcommand(s)>
 #  <si> <<help|commands> for subcommand(s)>
+#  <ds> <<help|commands> for subcommand(s)>
 ```
 
+
+Wallet commands:
+```sh
+sicli wallet help
+#  <wallet> <create> <<name> <type-optional ETHER | SEI default is ETHER>>
+#  <wallet> <mnemonic> <<name>>
+#  <wallet> <privateKey> <<name> <index>>
 
 DragonSwap commands:
 ```sh

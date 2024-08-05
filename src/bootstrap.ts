@@ -3,8 +3,6 @@ import { config as loadConfig } from 'dotenv'
 loadConfig()
 
 import { config, initEnv } from './common/config/config'
-initEnv()
-
 import siAbi from './contracts/sakeinu/abi.json'
 import routerAbi from './contracts/dragonswap/router.json'
 
@@ -44,6 +42,7 @@ import {
 import { WalletPrivateKey } from './commands/wallet/privateKey'
 
 function init() {
+  initEnv()
   wallet.init()
 }
 
@@ -94,13 +93,18 @@ function walletInit(): Command {
   return new WalletCommandHandler(walletCommands)
 }
 
-export async function bootstrap(): Promise<CommandHandler> {
-  init()
+export async function bootstrap(argv?: string[]): Promise<CommandHandler> {
+  let commands: Command[] = [walletInit()]
+  if (argv[0] !== 'wallet') {
+    init()
+    commands = commands.concat([sakeInuInit(), dragonSwapInit()])
+  }
+
   const commandHandler = new CommandHandler(
     '',
     'cli tools for SAKEINU(si), DragonSwap(ds) and Wallet(wallet)',
     '<command> <subcommand> <args...> ',
-    [dragonSwapInit(), sakeInuInit(), walletInit()],
+    commands,
   )
 
   return commandHandler
