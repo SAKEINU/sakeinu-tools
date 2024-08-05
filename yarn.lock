@@ -768,11 +768,6 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.13.tgz#f64277c341150c979e42b00e4ac289290c9df469"
   integrity sha512-N+0kuo9KgrUQ1Sn/ifDXsvg0TTleP7rIy4zOBGECxAljqvqfqpTfzx0Q1NUedOixRMBfe2Whhb056a42cWs26Q==
 
-"@types/readline-sync@^1.4.8":
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/@types/readline-sync/-/readline-sync-1.4.8.tgz#dc9767a93fc83825d90331f2549a2e90fc3255f0"
-  integrity sha512-BL7xOf0yKLA6baAX6MMOnYkoflUyj/c7y3pqMRfU0va7XlwHAOTOIo4x55P/qLfMsuaYdJJKubToLqRVmRtRZA==
-
 "@types/stack-utils@^2.0.0":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.3.tgz#6209321eb2c1712a7e7466422b8cb1fc0d9dd5d8"

@@ -37,7 +37,7 @@ function init() {
       )
     }
     console.info(`Creating HD wallet from provided mnemonic`)
-    instance = helper.createHDWallet(wc.mnemonic, wc.password).connect(provider)
+    instance = helper.createHDWalletFromPhrase(wc.mnemonic).connect(provider)
   }
 
   if (wc?.privateKey) {

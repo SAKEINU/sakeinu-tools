@@ -26,7 +26,7 @@ export class WalletMnemonic implements Command {
       console.error('Wallet is not HD Wallet')
       return false
     }
-    console.log(wlt.mnemonic)
+    console.log(wlt.mnemonic.phrase)
     return true
   }
 }
