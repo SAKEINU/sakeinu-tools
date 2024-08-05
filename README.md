@@ -115,6 +115,7 @@ sicli wallet help
 #  <wallet> <create> <<name> <type-optional ETHER | SEI default is ETHER>>
 #  <wallet> <mnemonic> <<name>>
 #  <wallet> <privateKey> <<name> <index>>
+```
 
 DragonSwap commands:
 ```sh

@@ -4,7 +4,7 @@ import { bootstrap } from './bootstrap'
 
 async function main() {
   const userInput = process.argv.slice(2)
-  const handler = await bootstrap(userInput)
+  const handler = await bootstrap(userInput[0] === 'wallet')
   handler.run(userInput)
 }
 

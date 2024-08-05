@@ -22,9 +22,10 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
   },
   "dependencies": {
+    "@inquirer/input": "^2.2.8",
+    "@inquirer/password": "^2.1.21",
     "dotenv": "^16.4.5",
-    "ethers": "^6.12.1",
-    "readline-sync": "^1.4.10"
+    "ethers": "^6.12.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.2",
