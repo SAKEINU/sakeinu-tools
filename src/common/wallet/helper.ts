@@ -1,3 +1,4 @@
+import { randomBytes } from 'crypto'
 import keystore from './keystore'
 import {
   defaultPath,
@@ -27,9 +28,12 @@ function createHDWalletFromPhrase(
   index = 0,
   walletType: HDPathType = 'ETHER',
 ): HDNodeWallet {
+  let mnemonic: Mnemonic
   if (!phrase) {
     console.warn(`Creating a new random wallet`)
-    return HDNodeWallet.createRandom()
+    mnemonic = Mnemonic.fromEntropy(randomBytes(16))
+  } else {
+    mnemonic = Mnemonic.fromPhrase(phrase)
   }
 
   if (hdPathType[walletType] === undefined) {
@@ -37,7 +41,6 @@ function createHDWalletFromPhrase(
   }
 
   console.log(`Creating ${walletType} HD wallet from mnemonic`)
-  const mnemonic = Mnemonic.fromPhrase(phrase)
   return HDNodeWallet.fromMnemonic(
     mnemonic,
     indexedAccountPath(walletType, index),
