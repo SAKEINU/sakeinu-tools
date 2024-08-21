@@ -15,20 +15,20 @@ function init() {
     console.error('Wallet is not set, may occur error')
   }
 
-  if (wc.name) {
-    // todo add path to keystore
-    keystore.load()
-    console.info(`Loading wallet ${wc.name} from the keystore`)
-    instance = helper.load(wc.name, wc.password)
-    if (instance == undefined) {
-      console.warn(`Wallet ${wc.name} not found`)
-    }
-  }
-
   if (!config.ethConfig.rpcUrl) {
     throw new Error('No rpc url found in config')
   }
   const provider = new ethers.JsonRpcProvider(config.ethConfig.rpcUrl)
+
+  if (wc.name) {
+    // todo add path to keystore
+    keystore.load()
+    console.info(`Loading wallet ${wc.name} from the keystore`)
+    instance = helper.load(wc.name, wc.password).connect(provider)
+    if (instance == undefined) {
+      console.warn(`Wallet ${wc.name} not found`)
+    }
+  }
 
   if (wc?.mnemonic) {
     if (wc?.name) {
@@ -63,7 +63,7 @@ function init() {
     }
     if (helper.isHDNodeWallet(instance)) {
       console.info(`Deriving wallet from HD wallet at index ${wc.index}`)
-      instance = helper.deriveChild(instance, wc.index)
+      instance = helper.deriveChild(instance, wc.index).connect(provider)
       console.log(`wallet address: ${instance.address}`)
     }
   }

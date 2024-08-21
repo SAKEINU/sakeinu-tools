@@ -29,7 +29,9 @@ export class WalletPrivateKey implements Command {
       return false
     }
 
-    console.log(wallet.deriveChild(wlt, index).privateKey)
+    const w = wallet.deriveChild(wlt, index)
+    console.log(`address: ${w.address}`)
+    console.log(w.privateKey)
     return true
   }
 }

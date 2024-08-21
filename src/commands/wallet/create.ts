@@ -17,6 +17,13 @@ export class WalletCreate implements Command {
 
     const mnemonic = await askSecrets('Enter your mnemonic: ')
     const password = await askSecrets('Enter your password: ')
+    const password2 = await askSecrets('Enter password again: ')
+
+    if (password !== password2) {
+      console.error('Passwords do not match')
+      return false
+    }
+
     const name = args[0]
     const wlt = wallet.createHDWalletFromPhrase(mnemonic, 0, args[1])
     wallet.save(name, wlt, password)
