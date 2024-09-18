@@ -33,6 +33,11 @@ export class SakeInuCheckAddress implements Command {
     const restUrl = `https://rest.sei-apis.com/sei-protocol/seichain/evm/evm_address`
     for (let i = 0; i < airdrops.length; i++) {
       const target = airdrops[i]
+      if (target.address.startsWith('0x')) {
+        console.log(`${i + 1} ${target.address} is evm address`)
+        continue
+      }
+
       const req: seiAddrReq = { sei_address: target.address }
       const params = new URLSearchParams(req as any)
 

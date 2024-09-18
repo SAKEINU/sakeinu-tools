@@ -41,9 +41,13 @@ export class SakeInuAirdrop implements Command {
         continue
       }
 
-      const params = new URLSearchParams({ sei_address: target.address })
-      let res: seiAddrRes
+      if (target.address.startsWith('0x')) {
+        evmAddresses[i] = target.address
+        continue
+      }
+
       try {
+        const params = new URLSearchParams({ sei_address: target.address })
         const result = await fetch(`${restUrl}?${params.toString()}`)
         if (!result.ok) {
           console.error(`Error fetching address ${target.address}`)
@@ -52,16 +56,16 @@ export class SakeInuAirdrop implements Command {
           i--
           continue
         }
-        res = await result.json()
+        const res: seiAddrRes = await result.json()
         if (res.associated === false) {
           console.warn(`${i + 1} Address ${target.address} is not associated`)
           continue
         }
+        evmAddresses[i] = res.evm_address
       } catch (err) {
         console.error(`Error fetching address ${target.address}`)
         i--
       }
-      evmAddresses[i] = res.evm_address
     }
 
     if (evmAddresses.length !== airdrops.length) {
@@ -87,7 +91,7 @@ export class SakeInuAirdrop implements Command {
 
       try {
         const tx = await this.si.transfer(
-          target.address,
+          evmAddress,
           parseUnits(target.amount.toString(), 18),
         )
 
@@ -103,10 +107,10 @@ export class SakeInuAirdrop implements Command {
         // success
         target.hash = receipt.hash
         console.log(
-          `${i + 1} Sent SAKE to ${target.address}(${evmAddress}), amount: ${target.amount}, tx: ${target.hash}`,
+          `${i + 1} SAKE Sent to: ${evmAddress}, amount: ${target.amount}, tx: ${target.hash}`,
         )
       } catch (err) {
-        console.error(`Error sending SAKE to ${target.address}(${evmAddress})`)
+        console.error(`${i + 1} Error sending SAKE to ${target.address}, err: ${err}`)
         break
       }
     }
