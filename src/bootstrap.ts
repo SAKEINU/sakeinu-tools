@@ -30,6 +30,8 @@ import {
   DragonSwapSell,
 } from './commands/dragonswap'
 import {
+  SakeInuAirdrop,
+  SakeInuCheckAddress,
   SakeInuIsLocked,
   SakeInuLockERC721,
   SakeInuUnlockERC721,
@@ -80,6 +82,8 @@ function sakeInuInit(): Command {
     new SakeInuLockERC721(si),
     new SakeInuIsLocked(si),
     new SakeInuUnlockERC721(si),
+    new SakeInuAirdrop(si),
+    new SakeInuCheckAddress(si),
   ]
   return new SakeInuCommandHandler(siCommands)
 }

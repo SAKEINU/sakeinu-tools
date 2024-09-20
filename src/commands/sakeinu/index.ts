@@ -1,3 +1,5 @@
+export * from './airdrop'
+export * from './checkAddress'
 export * from './maxApprove'
 export * from './setERC721Exemption'
 export * from './lockERC721'
